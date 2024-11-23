@@ -27,6 +27,11 @@ package lox;
             return parenthesize(expr.operator.lexeme, expr.left, expr.right);
         }
 
+        @Override
+        public String visitConditionalExpr(Expr.Conditional expr) {
+            return parenthesize("cond", expr.condition, expr.left, expr.right);
+        }
+
         private String parenthesize(String name, Expr... exprs) {
             StringBuilder builder = new StringBuilder();
             builder.append("(");

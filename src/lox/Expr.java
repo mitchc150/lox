@@ -1,11 +1,14 @@
 package lox;
 
+import java.util.List;
+
 abstract class Expr {
   interface Visitor<R> {
     R visitBinaryExpr(Binary expr);
     R visitGroupingExpr(Grouping expr);
     R visitLiteralExpr(Literal expr);
     R visitUnaryExpr(Unary expr);
+    R visitConditionalExpr(Conditional expr);
   }
     static class Binary extends Expr {
         Binary (Expr left, Token operator, Expr right) {
@@ -14,10 +17,10 @@ abstract class Expr {
             this.right = right;
         }
 
-    @Override
-    <R> R accept(Visitor<R> visitor) {
-      return visitor.visitBinaryExpr(this);
-    }
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+          return visitor.visitBinaryExpr(this);
+        }
         final Expr left;
         final Token operator;
         final Expr right;
@@ -27,10 +30,10 @@ abstract class Expr {
             this.expression = expression;
         }
 
-    @Override
-    <R> R accept(Visitor<R> visitor) {
-      return visitor.visitGroupingExpr(this);
-    }
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+          return visitor.visitGroupingExpr(this);
+        }
         final Expr expression;
     }
     static class Literal extends Expr {
@@ -38,10 +41,10 @@ abstract class Expr {
             this.value = value;
         }
 
-    @Override
-    <R> R accept(Visitor<R> visitor) {
-      return visitor.visitLiteralExpr(this);
-    }
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+          return visitor.visitLiteralExpr(this);
+        }
         final Object value;
     }
     static class Unary extends Expr {
@@ -50,11 +53,26 @@ abstract class Expr {
             this.right = right;
         }
 
-    @Override
-    <R> R accept(Visitor<R> visitor) {
-      return visitor.visitUnaryExpr(this);
-    }
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+          return visitor.visitUnaryExpr(this);
+        }
         final Token operator;
+        final Expr right;
+    }
+    static class Conditional extends Expr {
+        Conditional (Expr condition, Expr left, Expr right) {
+            this.condition = condition;
+            this.left = left;
+            this.right = right;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+          return visitor.visitConditionalExpr(this);
+        }
+        final Expr condition;
+        final Expr left;
         final Expr right;
     }
 

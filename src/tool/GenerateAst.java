@@ -7,12 +7,13 @@ import java.util.List;
 
 public class GenerateAst {
     public static void main(String[] args) throws IOException {
-        String outputDir = "..\\lox";
+        String outputDir = ".\\lox";
         defineAst(outputDir, "Expr", Arrays.asList(
-                "Binary   : Expr left, Token operator, Expr right",
-                "Grouping : Expr expression",
-                "Literal  : Object value",
-                "Unary    : Token operator, Expr right"
+                "Binary         : Expr left, Token operator, Expr right",
+                "Grouping       : Expr expression",
+                "Literal        : Object value",
+                "Unary          : Token operator, Expr right",
+                "Conditional    : Expr condition, Expr left, Expr right"
         ));
     }
 
@@ -48,11 +49,11 @@ public class GenerateAst {
         }
         writer.println("        }");
         writer.println();
-        writer.println("    @Override");
-        writer.println("    <R> R accept(Visitor<R> visitor) {");
-        writer.println("      return visitor.visit" +
+        writer.println("        @Override");
+        writer.println("        <R> R accept(Visitor<R> visitor) {");
+        writer.println("          return visitor.visit" +
                 className + baseName + "(this);");
-        writer.println("    }");
+        writer.println("        }");
         for (String field : parsedFields) {
             String name = field.split(" ")[1];
             String type = field.split(" ")[0];
