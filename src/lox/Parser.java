@@ -115,6 +115,32 @@ public class Parser {
             consume(RIGHT_PAREN, "Expect ')' after expression.");
             return new Expr.Grouping(expr);
         }
+
+        // Error productions
+        if (match(BANG, BANG_EQUAL)) {
+            error(previous(), "Missing left-hand operand");
+            equality();
+            return null;
+        }
+
+        if (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+            error(previous(), "Missing left-hand operand.");
+            comparison();
+            return null;
+        }
+
+        if (match(PLUS)) {
+            error(previous(), "Missing left-hand operand.");
+            term();
+            return null;
+        }
+
+        if (match(SLASH, STAR)) {
+            error(previous(), "Missing left-hand operand.");
+            factor();
+            return null;
+        }
+
         throw error(peek(), "Expect expression.");
     }
 
@@ -161,7 +187,6 @@ public class Parser {
         Lox.error(token, message);
         return new ParseError();
     }
-
 
     private void synchronize() {
         advance();
