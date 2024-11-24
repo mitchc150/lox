@@ -1,3 +1,3 @@
-This repository is for code from the Crafting Interpreters book, written by Robert Nystrom.
+This repository is for working through chapters and exercises from the Crafting Interpreters book, written by Robert Nystrom.
 
 https://craftinginterpreters.com/
